@@ -34,4 +34,17 @@ JSFX文件是由一些**描述行**以及跟随其后的一个或多个代码块
   这一行用于规定JSFX选项（用空格来区分不同的选项）：
   * options:gmem=someUniquelyNamespace
   这个选项允许插件分配自己的全局共享缓冲区，详见**gmem[]**   
-  * 
+  * options:want_all_kb
+  为这个插件之后的新对象开启"Send all keyboard input to plug-in"（将所有键盘输入发送到插件中）选项，详见**gfx_getchar()**   
+  * options:maxmem=XYZ
+  使这个插件的最大可用内存限制为指定内存槽。默认大小为8M，最大大小为32M。可以通过 **_memtop()** 检查该脚本的内存是否可用。
+  * option:no_meter
+  使该插件没有显示仪表 *此处原文为meters，翻译存疑*   
+  * option:gfx_idle <font color=#aaaaaa>*--REAPER 6.44+*</font>
+  规定后，**@gfx**将被周期性调用（尽管速率可能降低）即使UI关闭。这种情况下，**gfx_ext_flags**将被设定为2.
+  * options:gfx_idle_only <font color=#aaaaaa>*--REAPER 6.44+*</font>  
+  规定后，**@gfx**将只能被周期性调用，且UI不会被禁用。对于那些没有自定义UI但想从UI线程中完成空闲处理的插件非常有用。 
+  * options:gfx_hz=60 <font color=#aaaaaa>*--REAPER 6.44+*</font>  
+  规定后，**@gfx**部分将以一个接近指定频率的速率运行（请注意，代码应该使用音频样本统计或者**time_precise()** 来单独获得帧率，而非依赖更新频率）。  
+* import filename <font color=#aaaaaa>*--REAPER v4.25+*</font> 
+  你可以指定一个文件进行导入（将在JS效果的目录下搜索文件名）。通过这个指令导入文件，将会使所有在导入的文件自身**@init**部分定义的函数在原效果中有效。此外，如果导入的文件实现了其他部分（例如@sample 等），而原文件没有实现这些部分，则将使用导入文件的这些部分。  
