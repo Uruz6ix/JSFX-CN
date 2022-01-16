@@ -20,3 +20,18 @@ JSFX文件是由一些**描述行**以及跟随其后的一个或多个代码块
    在上面这个例子中，**/some_path**规定了一个在REAPER\Data下的子目录的路径，用于扫描.wav，.txt，.ogg和.raw文件。**default_value**定义了一个默认文件名。如果它被使用，这个脚本通常将在：**@serialize**代码块中使用file_open(slider1)读取选定文件的内容。
    * slider1:0<0,127,1>-**Hidden parameter**  
    你也可以同过在其名称前加上"-"来隐藏slider。这个变量将不会在插件UI中显示，不过仍然自动地发挥作用。 
+* in_pin:**name_1**  
+  in_pin:**name_2**  
+  out_pin:**none**  
+  这些可选描述行定义了每一个JSFX引脚（效果通道）的名称，将在REAPER插件的引脚连接对话框中显示。  
+  如果唯一一个被命名的in_pin或out_pin的标签为"none"，REAPER将认定这个效果没有音频输入（或输出），这可以用于一些过程优化。只作用于MIDI的效果应该规定in_pin:none且out_pin:none  
+* filename:**0**,**filename.wav**  
+  这些描述行用于规定在之后代码中使用的文件的名称。这些定义包括索引**0**和文件名("filename")。索引必须从头开始没有间隔地依次排下，且第一个索引必须为**0**。  
+  要使用通常的文件，这些文件应该在REAPER\Data目录中，确保它们可以通过
+  **file_open()** 打开，并传递其文件名索引。<font color=#aaaaaa>*此处翻译存疑*</font>  
+  你也可以用此描述行规定一个PNG文件。如果你规定了一个PNG文件，它应该在此效果的同一个目录中打开，你可以将其文件名索引作为**gfx_blit()** 函数的变量。<font color=#aaaaaa>*--REAPER 2.018+*</font>    
+* options:**option_dependent_syntax**  
+  这一行用于规定JSFX选项（用空格来区分不同的选项）：
+  * options:gmem=someUniquelyNamespace
+  这个选项允许插件分配自己的全局共享缓冲区，详见**gmem[]**   
+  * 
